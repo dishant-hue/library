@@ -1,0 +1,88 @@
+from datetime import datetime
+
+books = []
+issued_books = {}
+
+
+def add_book():
+    name = input("Enter the book name: ")
+    books.append(name)
+    print(name, "is added successfully")
+
+
+def show_books():
+    if len(books) == 0:
+        print("No books available")
+    else:
+        print("\nAvailable books:")
+        for b in books:
+            print(b)
+
+    # show issued books with date & time
+    if len(issued_books) > 0:
+        print("\nIssued books:")
+        for name, time in issued_books.items():
+            print(name, "-> Issued on:", time)
+
+
+def issue_book():
+    if len(books) == 0:
+        print("No books available")
+        return
+    else:
+        show_books()
+        name = input("Enter the book name you want to issue: ")
+
+        if name in books:
+            issue_time = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+            issued_books[name] = issue_time
+            books.remove(name)
+            print(name, "is issued on", issue_time)
+        else:
+            print(name, "is not available")
+
+
+def return_book():
+    name = input("Enter the book name you want to return: ")
+
+    if name in issued_books:
+        old_time = datetime.strptime(issued_books[name], "%d-%m-%Y %H:%M:%S")
+        return_time = datetime.now()
+
+        days_kept = (return_time - old_time).days
+
+        del issued_books[name]
+        books.append(name)
+
+        print(name, "book returned after", days_kept, "days")
+    else:
+        print(name, "book was never issued")
+
+
+def library():
+    while True:
+        print("\n===== LIBRARY MANAGEMENT SYSTEM =====")
+        print("1. Add book")
+        print("2. Show books")
+        print("3. Issue book")
+        print("4. Return book")
+        print("5. Exit")
+
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            add_book()
+        elif choice == 2:
+            show_books()
+        elif choice == 3:
+            issue_book()
+        elif choice == 4:
+            return_book()
+        elif choice == 5:
+            print("Thank you!")
+            break
+        else:
+            print("Invalid choice")
+
+
+library()
