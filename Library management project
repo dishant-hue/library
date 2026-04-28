@@ -18,7 +18,6 @@ def show_books():
         for b in books:
             print(b)
 
-    # show issued books with date & time
     if len(issued_books) > 0:
         print("\nIssued books:")
         for name, time in issued_books.items():
